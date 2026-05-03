@@ -1,4 +1,4 @@
-import { ChevronDown, Menu, Search, X } from 'lucide-react';
+import { ChevronDown, Home, Menu, Search, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
@@ -73,8 +73,36 @@ function Navbar() {
         <div className="site-header__top">
           <div className="site-header__inner site-header__top-inner">
             <BrandLogo />
+
+            {/* Mobile top-bar: home + search + hamburger — hidden on desktop */}
+            <div className="mobile-top-actions">
+              <NavLink to="/" end className="mobile-top-btn" aria-label="Home">
+                <Home size={20} strokeWidth={2.2} />
+              </NavLink>
+              <button
+                className="mobile-top-btn"
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Search"
+              >
+                <Search size={20} strokeWidth={2.2} />
+              </button>
+              <button
+                className="menu-toggle"
+                type="button"
+                aria-controls="primary-navigation"
+                aria-expanded={isMenuOpen}
+                onClick={() => setIsMenuOpen((c) => !c)}
+              >
+                {isMenuOpen
+                  ? <X size={24} strokeWidth={2.4} aria-hidden="true" />
+                  : <Menu size={24} strokeWidth={2.4} aria-hidden="true" />}
+                <span className="sr-only">Toggle navigation menu</span>
+              </button>
+            </div>
+
+            {/* Desktop hamburger — hidden on mobile (mobile-top-actions handles it) */}
             <button
-              className="menu-toggle"
+              className="menu-toggle menu-toggle--desktop-only"
               type="button"
               aria-controls="primary-navigation"
               aria-expanded={isMenuOpen}
@@ -161,27 +189,30 @@ function Navbar() {
               </div>
             ))}
 
-            {utilityLinks.map((link) => (
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
-                }
-                key={link.path}
-                to={link.path}
+            {/* Desktop only: utility links + search in the nav bar */}
+            <div className="primary-nav__desktop-utilities">
+              {utilityLinks.map((link) => (
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
+                  }
+                  key={link.path}
+                  to={link.path}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              <button
+                className="primary-nav__link primary-nav__search-btn"
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Open search"
               >
-                {link.label}
-              </NavLink>
-            ))}
+                <span>Search</span>
+                <Search size={16} strokeWidth={2.4} aria-hidden="true" />
+              </button>
+            </div>
 
-            <button
-              className="primary-nav__link primary-nav__search-btn"
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Open search"
-            >
-              <span>Search</span>
-              <Search size={16} strokeWidth={2.4} aria-hidden="true" />
-            </button>
-
+            {/* Mobile only: utility links shown once at bottom of hamburger menu */}
             <div className="primary-nav__mobile-utilities">
               {utilityLinks.map((link) => (
                 <NavLink
