@@ -167,7 +167,6 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Menu Toggle ── */
-/* Hidden everywhere by default — only shown on desktop via the rule below */
 .menu-toggle {
   display: none;
   width: 46px;
@@ -186,13 +185,13 @@ img { display: block; max-width: 100%; }
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* Desktop hamburger — hidden on mobile, shown on desktop */
+/* Desktop hamburger — hidden on mobile, hidden on desktop too
+   since full nav fits fine on desktop */
 .menu-toggle--desktop-only {
   display: none;
 }
 
 /* ── Mobile Top Actions (home + search + hamburger) ── */
-/* Hidden on desktop, shown on mobile via media query */
 .mobile-top-actions {
   display: none;
   align-items: center;
@@ -318,7 +317,7 @@ img { display: block; max-width: 100%; }
   align-items: stretch;
 }
 
-/* Mobile utilities — hidden on desktop, visible on mobile */
+/* Mobile utilities — hidden on desktop, shown on mobile */
 .primary-nav__mobile-utilities {
   display: none;
 }
@@ -1586,13 +1585,13 @@ a.feature-card:hover .feature-card__link {
   .utility-nav { display: none; }
   .site-header__top-inner { min-height: 80px; }
 
-  /* Show mobile top actions (home + search + hamburger) */
+  /* Show mobile top actions */
   .mobile-top-actions { display: flex; }
 
-  /* Hide desktop-only hamburger on mobile */
+  /* Hide desktop-only hamburger */
   .menu-toggle--desktop-only { display: none !important; }
 
-  /* Hide desktop utility links, show mobile ones */
+  /* Hide desktop utilities, show mobile ones */
   .primary-nav__desktop-utilities { display: none; }
 
   /* Animate nav open/close */
@@ -1626,33 +1625,30 @@ a.feature-card:hover .feature-card__link {
 
   .primary-nav__chevron-btn { display: inline-flex; }
 
-  /* Mobile utility links at bottom of menu — shown once, no duplicates */
+  /* Mobile utility links — identical style to regular nav links */
   .primary-nav__mobile-utilities {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 16px;
-    background: #f8fbfc;
+    display: flex;
+    flex-direction: column;
   }
 
   .mobile-utility-link {
-    display: inline-flex;
-    min-height: 46px;
+    display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1.5px solid var(--color-border);
-    border-radius: var(--radius);
-    background: #ffffff;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--color-border);
     color: var(--color-purple);
     font-weight: 700;
-    font-size: 0.88rem;
-    transition: all 180ms ease;
+    font-size: 0.92rem;
+    background: #ffffff;
+    transition: background 180ms ease, color 180ms ease;
   }
 
   .mobile-utility-link.is-active,
   .mobile-utility-link:hover {
-    border-color: var(--color-cyan);
-    background: rgba(0, 207, 234, 0.08);
+    background: var(--color-cyan);
+    color: var(--color-purple-dark);
   }
 
   .page-hero,
@@ -1741,7 +1737,7 @@ a.feature-card:hover .feature-card__link {
   .brand-logo__divider { height: 32px; margin-left: 2px; }
   .brand-logo__country { font-size: 1.28rem; }
 
-  .primary-nav__mobile-utilities { grid-template-columns: 1fr; }
+  .primary-nav__mobile-utilities { flex-direction: column; }
 
   .page { width: min(100% - 24px, var(--container)); padding: 40px 0; }
 
