@@ -167,6 +167,7 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Menu Toggle ── */
+/* Hidden everywhere by default — only shown on desktop via the rule below */
 .menu-toggle {
   display: none;
   width: 46px;
@@ -185,10 +186,13 @@ img { display: block; max-width: 100%; }
   background: rgba(255, 255, 255, 0.16);
 }
 
-/* desktop-only hamburger hidden on mobile (mobile-top-actions handles it instead) */
-.menu-toggle--desktop-only { display: none; }
+/* Desktop hamburger — hidden on mobile, shown on desktop */
+.menu-toggle--desktop-only {
+  display: none;
+}
 
-/* ── Mobile Top Actions (home + search + hamburger in header bar) ── */
+/* ── Mobile Top Actions (home + search + hamburger) ── */
+/* Hidden on desktop, shown on mobile via media query */
 .mobile-top-actions {
   display: none;
   align-items: center;
@@ -308,14 +312,16 @@ img { display: block; max-width: 100%; }
   color: var(--color-purple-dark);
 }
 
-/* Desktop utilities wrapper — visible on desktop, hidden on mobile */
+/* Desktop utilities — visible on desktop, hidden on mobile */
 .primary-nav__desktop-utilities {
   display: flex;
   align-items: stretch;
 }
 
-/* Mobile utilities wrapper — hidden on desktop, visible on mobile */
-.primary-nav__mobile-utilities { display: none; }
+/* Mobile utilities — hidden on desktop, visible on mobile */
+.primary-nav__mobile-utilities {
+  display: none;
+}
 
 /* ── Mega Menu ── */
 .mega-menu {
@@ -1572,18 +1578,24 @@ a.feature-card:hover .feature-card__link {
   font-size: 0.95rem;
 }
 
-/* ── Responsive ── */
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
 @media (max-width: 1060px) {
   .utility-nav { display: none; }
   .site-header__top-inner { min-height: 80px; }
 
-  /* Show mobile top actions, hide desktop-only hamburger */
+  /* Show mobile top actions (home + search + hamburger) */
   .mobile-top-actions { display: flex; }
+
+  /* Hide desktop-only hamburger on mobile */
   .menu-toggle--desktop-only { display: none !important; }
 
-  /* Hide desktop utility links in nav, show mobile ones */
+  /* Hide desktop utility links, show mobile ones */
   .primary-nav__desktop-utilities { display: none; }
 
+  /* Animate nav open/close */
   .primary-nav {
     display: grid;
     grid-template-rows: 0fr;
@@ -1614,6 +1626,7 @@ a.feature-card:hover .feature-card__link {
 
   .primary-nav__chevron-btn { display: inline-flex; }
 
+  /* Mobile utility links at bottom of menu — shown once, no duplicates */
   .primary-nav__mobile-utilities {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

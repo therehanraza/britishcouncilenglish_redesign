@@ -74,7 +74,7 @@ function Navbar() {
           <div className="site-header__inner site-header__top-inner">
             <BrandLogo />
 
-            {/* Mobile top-bar: home + search + hamburger — hidden on desktop */}
+            {/* MOBILE ONLY: Home + Search + Hamburger */}
             <div className="mobile-top-actions">
               <NavLink to="/" end className="mobile-top-btn" aria-label="Home">
                 <Home size={20} strokeWidth={2.2} />
@@ -87,11 +87,12 @@ function Navbar() {
                 <Search size={20} strokeWidth={2.2} />
               </button>
               <button
-                className="menu-toggle"
+                className="mobile-top-btn"
                 type="button"
                 aria-controls="primary-navigation"
                 aria-expanded={isMenuOpen}
                 onClick={() => setIsMenuOpen((c) => !c)}
+                aria-label="Toggle navigation menu"
               >
                 {isMenuOpen
                   ? <X size={24} strokeWidth={2.4} aria-hidden="true" />
@@ -100,13 +101,14 @@ function Navbar() {
               </button>
             </div>
 
-            {/* Desktop hamburger — hidden on mobile (mobile-top-actions handles it) */}
+            {/* DESKTOP ONLY: just the hamburger */}
             <button
               className="menu-toggle menu-toggle--desktop-only"
               type="button"
               aria-controls="primary-navigation"
               aria-expanded={isMenuOpen}
               onClick={() => setIsMenuOpen((c) => !c)}
+              aria-label="Toggle navigation menu"
             >
               {isMenuOpen
                 ? <X size={24} strokeWidth={2.4} aria-hidden="true" />
@@ -155,7 +157,11 @@ function Navbar() {
                         size={13}
                         strokeWidth={2.8}
                         aria-hidden="true"
-                        className={mobileExpanded === link.label ? 'primary-nav__chevron is-open' : 'primary-nav__chevron'}
+                        className={
+                          mobileExpanded === link.label
+                            ? 'primary-nav__chevron is-open'
+                            : 'primary-nav__chevron'
+                        }
                       />
                     </button>
                   </div>
@@ -177,7 +183,9 @@ function Navbar() {
                       <NavLink
                         key={item.path}
                         className={({ isActive }) =>
-                          isActive ? 'mobile-dropdown__link is-active' : 'mobile-dropdown__link'
+                          isActive
+                            ? 'mobile-dropdown__link is-active'
+                            : 'mobile-dropdown__link'
                         }
                         to={item.path}
                       >
@@ -189,7 +197,7 @@ function Navbar() {
               </div>
             ))}
 
-            {/* Desktop only: utility links + search in the nav bar */}
+            {/* DESKTOP ONLY: utility links + search in nav bar */}
             <div className="primary-nav__desktop-utilities">
               {utilityLinks.map((link) => (
                 <NavLink
@@ -212,7 +220,7 @@ function Navbar() {
               </button>
             </div>
 
-            {/* Mobile only: utility links shown once at bottom of hamburger menu */}
+            {/* MOBILE ONLY: utility links once at bottom of hamburger menu — no duplicates */}
             <div className="primary-nav__mobile-utilities">
               {utilityLinks.map((link) => (
                 <NavLink
@@ -229,7 +237,7 @@ function Navbar() {
           </div>
         </nav>
 
-        {/* Mega menu — outside nav, inside header, full width */}
+        {/* Mega menu — desktop hover dropdowns */}
         {navLinks.map((link) =>
           link.dropdown && activeDropdown === link.label ? (
             <div
