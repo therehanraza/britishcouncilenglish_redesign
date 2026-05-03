@@ -1,5 +1,9 @@
 export const navLinks = [
   {
+    label: 'Home',
+    path: '/',
+  },
+  {
     label: 'Learn English',
     path: '/learn-english',
     dropdown: [
@@ -49,10 +53,6 @@ export const navLinks = [
       { label: 'Our work in higher education', path: '/our-work/higher-education' },
       { label: 'Our work in English teaching and learning', path: '/our-work/english-teaching' },
     ],
-  },
-  {
-    label: 'Home',
-    path: '/',
   },
   {
     label: 'Events',
