@@ -1,21 +1,28 @@
 import { ChevronDown, Menu, Search, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { navLinks, utilityLinks } from '../../data/navLinks.js';
+import { searchIndex } from '../../data/siteContent.js';
 import BrandLogo from './BrandLogo.jsx';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileExpanded, setMobileExpanded] = useState(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const navRef = useRef(null);
+  const searchInputRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsMenuOpen(false);
     setActiveDropdown(null);
     setMobileExpanded(null);
+    setIsSearchOpen(false);
+    setSearchQuery('');
   }, [location]);
 
   useEffect(() => {
@@ -28,121 +35,136 @@ function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current.focus(), 100);
+    }
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') setIsSearchOpen(false);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const searchResults = useMemo(() => {
+    const clean = searchQuery.trim().toLowerCase();
+    if (!clean) return [];
+    return searchIndex
+      .filter((item) =>
+        `${item.title} ${item.text} ${item.type || ''}`.toLowerCase().includes(clean)
+      )
+      .slice(0, 6);
+  }, [searchQuery]);
+
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+    }
+  }
+
   return (
-    <header className="site-header" ref={navRef}>
-      <div className="site-header__top">
-        <div className="site-header__inner site-header__top-inner">
-          <BrandLogo />
-          <button
-            className="menu-toggle"
-            type="button"
-            aria-controls="primary-navigation"
-            aria-expanded={isMenuOpen}
-            onClick={() => setIsMenuOpen((c) => !c)}
-          >
-            {isMenuOpen
-              ? <X size={24} strokeWidth={2.4} aria-hidden="true" />
-              : <Menu size={24} strokeWidth={2.4} aria-hidden="true" />}
-            <span className="sr-only">Toggle navigation menu</span>
-          </button>
-        </div>
-      </div>
-
-      <nav
-        className={isMenuOpen ? 'primary-nav is-open' : 'primary-nav'}
-        id="primary-navigation"
-        aria-label="Main navigation"
-      >
-        <div className="site-header__inner primary-nav__inner">
-
-          {navLinks.map((link) => (
-            <div
-              key={link.path}
-              className="primary-nav__item"
-              onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
-              onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
+    <>
+      <header className="site-header" ref={navRef}>
+        <div className="site-header__top">
+          <div className="site-header__inner site-header__top-inner">
+            <BrandLogo />
+            <button
+              className="menu-toggle"
+              type="button"
+              aria-controls="primary-navigation"
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((c) => !c)}
             >
-              {link.dropdown ? (
-                /* NavLink for click-to-navigate + chevron button for mobile toggle */
-                <div className="primary-nav__link-group">
+              {isMenuOpen
+                ? <X size={24} strokeWidth={2.4} aria-hidden="true" />
+                : <Menu size={24} strokeWidth={2.4} aria-hidden="true" />}
+              <span className="sr-only">Toggle navigation menu</span>
+            </button>
+          </div>
+        </div>
+
+        <nav
+          className={isMenuOpen ? 'primary-nav is-open' : 'primary-nav'}
+          id="primary-navigation"
+          aria-label="Main navigation"
+        >
+          <div className="site-header__inner primary-nav__inner">
+            {navLinks.map((link) => (
+              <div
+                key={link.path}
+                className="primary-nav__item"
+                onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
+                onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
+              >
+                {link.dropdown ? (
+                  <div className="primary-nav__link-group">
+                    <NavLink
+                      className={({ isActive }) =>
+                        activeDropdown === link.label
+                          ? 'primary-nav__link primary-nav__link--has-dropdown is-open'
+                          : isActive
+                          ? 'primary-nav__link primary-nav__link--has-dropdown is-active'
+                          : 'primary-nav__link primary-nav__link--has-dropdown'
+                      }
+                      to={link.path}
+                    >
+                      {link.label}
+                    </NavLink>
+                    <button
+                      type="button"
+                      className="primary-nav__chevron-btn"
+                      aria-expanded={mobileExpanded === link.label}
+                      onClick={() =>
+                        setMobileExpanded((p) => (p === link.label ? null : link.label))
+                      }
+                    >
+                      <ChevronDown
+                        size={13}
+                        strokeWidth={2.8}
+                        aria-hidden="true"
+                        className={mobileExpanded === link.label ? 'primary-nav__chevron is-open' : 'primary-nav__chevron'}
+                      />
+                    </button>
+                  </div>
+                ) : (
                   <NavLink
                     className={({ isActive }) =>
-                      activeDropdown === link.label
-                        ? 'primary-nav__link primary-nav__link--has-dropdown is-open'
-                        : isActive
-                        ? 'primary-nav__link primary-nav__link--has-dropdown is-active'
-                        : 'primary-nav__link primary-nav__link--has-dropdown'
+                      isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
                     }
+                    end={link.path === '/'}
                     to={link.path}
                   >
                     {link.label}
                   </NavLink>
-                  <button
-                    type="button"
-                    className="primary-nav__chevron-btn"
-                    aria-expanded={mobileExpanded === link.label}
-                    onClick={() =>
-                      setMobileExpanded((p) => (p === link.label ? null : link.label))
-                    }
-                  >
-                    <ChevronDown
-                      size={13}
-                      strokeWidth={2.8}
-                      aria-hidden="true"
-                      className={mobileExpanded === link.label ? 'primary-nav__chevron is-open' : 'primary-nav__chevron'}
-                    />
-                  </button>
-                </div>
-              ) : (
-                <NavLink
-                  className={({ isActive }) =>
-                    isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
-                  }
-                  end={link.path === '/'}
-                  to={link.path}
-                >
-                  {link.label}
-                </NavLink>
-              )}
+                )}
 
-              {/* Mobile accordion */}
-              {link.dropdown && isMenuOpen && mobileExpanded === link.label && (
-                <div className="mobile-dropdown">
-                  {link.dropdown.map((item) => (
-                    <NavLink
-                      key={item.path}
-                      className={({ isActive }) =>
-                        isActive ? 'mobile-dropdown__link is-active' : 'mobile-dropdown__link'
-                      }
-                      to={item.path}
-                    >
-                      {item.label}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                {link.dropdown && isMenuOpen && mobileExpanded === link.label && (
+                  <div className="mobile-dropdown">
+                    {link.dropdown.map((item) => (
+                      <NavLink
+                        key={item.path}
+                        className={({ isActive }) =>
+                          isActive ? 'mobile-dropdown__link is-active' : 'mobile-dropdown__link'
+                        }
+                        to={item.path}
+                      >
+                        {item.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
 
-          {utilityLinks.map((link) => (
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
-              }
-              key={link.path}
-              to={link.path}
-            >
-              {link.label === 'Search' ? (
-                <><span>{link.label}</span><Search size={16} strokeWidth={2.4} aria-hidden="true" /></>
-              ) : link.label}
-            </NavLink>
-          ))}
-
-          <div className="primary-nav__mobile-utilities">
             {utilityLinks.map((link) => (
               <NavLink
                 className={({ isActive }) =>
-                  isActive ? 'mobile-utility-link is-active' : 'mobile-utility-link'
+                  isActive ? 'primary-nav__link is-active' : 'primary-nav__link'
                 }
                 key={link.path}
                 to={link.path}
@@ -150,10 +172,33 @@ function Navbar() {
                 {link.label}
               </NavLink>
             ))}
-          </div>
-        </div>
 
-        {/* MEGA MENU — outside inner container, inside nav, spans full width */}
+            <button
+              className="primary-nav__link primary-nav__search-btn"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Open search"
+            >
+              <span>Search</span>
+              <Search size={16} strokeWidth={2.4} aria-hidden="true" />
+            </button>
+
+            <div className="primary-nav__mobile-utilities">
+              {utilityLinks.map((link) => (
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? 'mobile-utility-link is-active' : 'mobile-utility-link'
+                  }
+                  key={link.path}
+                  to={link.path}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        {/* Mega menu — outside nav, inside header, full width */}
         {navLinks.map((link) =>
           link.dropdown && activeDropdown === link.label ? (
             <div
@@ -196,8 +241,57 @@ function Navbar() {
             </div>
           ) : null
         )}
-      </nav>
-    </header>
+      </header>
+
+      {/* Search Overlay */}
+      {isSearchOpen && (
+        <div className="search-overlay" role="dialog" aria-label="Search">
+          <div className="search-overlay__backdrop" onClick={() => setIsSearchOpen(false)} />
+          <div className="search-overlay__box">
+            <form className="search-overlay__form" onSubmit={handleSearchSubmit}>
+              <Search size={22} className="search-overlay__icon" aria-hidden="true" />
+              <input
+                ref={searchInputRef}
+                type="search"
+                className="search-overlay__input"
+                placeholder="Search courses, exams, events..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button
+                type="button"
+                className="search-overlay__close"
+                onClick={() => setIsSearchOpen(false)}
+                aria-label="Close search"
+              >
+                <X size={22} strokeWidth={2.4} />
+              </button>
+            </form>
+
+            {searchResults.length > 0 && (
+              <ul className="search-overlay__results">
+                {searchResults.map((item) => (
+                  <li key={`${item.type}-${item.title}`}>
+                    <NavLink
+                      to={item.to || '/search'}
+                      className="search-overlay__result"
+                      onClick={() => setIsSearchOpen(false)}
+                    >
+                      <span className="search-overlay__result-type">{item.type}</span>
+                      <span className="search-overlay__result-title">{item.title}</span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {searchQuery && searchResults.length === 0 && (
+              <p className="search-overlay__empty">No results found for "{searchQuery}"</p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

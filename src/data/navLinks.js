@@ -68,5 +68,4 @@ export const utilityLinks = [
   { label: 'Sign up for newsletters', path: '/newsletter' },
   { label: 'Contact us', path: '/contact' },
   { label: 'Blog', path: '/blog' },
-  { label: 'Search', path: '/search' },
 ];

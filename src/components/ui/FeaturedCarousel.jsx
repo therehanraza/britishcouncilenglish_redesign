@@ -1,15 +1,30 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function FeaturedCarousel({ items }) {
   const [current, setCurrent] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(null);
+  const [transitioning, setTransitioning] = useState(false);
+
+  const goTo = useCallback((index) => {
+    if (transitioning || index === current) return;
+    setPrevIndex(current);
+    setTransitioning(true);
+    setCurrent(index);
+    setTimeout(() => {
+      setPrevIndex(null);
+      setTransitioning(false);
+    }, 450);
+  }, [transitioning, current]);
 
   const next = useCallback(() => {
-    setCurrent((i) => (i === items.length - 1 ? 0 : i + 1));
-  }, [items.length]);
+    goTo(current === items.length - 1 ? 0 : current + 1);
+  }, [current, items.length, goTo]);
 
-  const prev = () => setCurrent((i) => (i === 0 ? items.length - 1 : i - 1));
+  const prev = useCallback(() => {
+    goTo(current === 0 ? items.length - 1 : current - 1);
+  }, [current, items.length, goTo]);
 
   useEffect(() => {
     const timer = setInterval(next, 5000);
@@ -22,45 +37,58 @@ function FeaturedCarousel({ items }) {
     <div className="featured-carousel">
       <div className="featured-carousel__inner">
 
-        {/* Left arrow */}
-        <button className="featured-carousel__arrow featured-carousel__arrow--left" onClick={prev} aria-label="Previous">
+        <button
+          className="featured-carousel__arrow featured-carousel__arrow--left"
+          onClick={prev}
+          aria-label="Previous"
+        >
           <ChevronLeft size={22} />
         </button>
 
-        {/* Image */}
         <div className="featured-carousel__image-wrap">
+          {prevIndex !== null && (
+            <img
+              src={items[prevIndex].image}
+              alt={items[prevIndex].title}
+              className="featured-carousel__image featured-carousel__image--exit"
+            />
+          )}
           <img
             key={current}
             src={slide.image}
             alt={slide.title}
-            className="featured-carousel__image"
+            className="featured-carousel__image featured-carousel__image--enter"
           />
+          <div className="featured-carousel__image-overlay" />
         </div>
 
-        {/* Right panel */}
         <div className="featured-carousel__panel">
-          {/* Dots */}
           <div className="featured-carousel__dots">
             {items.map((_, i) => (
               <button
                 key={i}
                 className={`featured-carousel__dot${i === current ? ' featured-carousel__dot--active' : ''}`}
-                onClick={() => setCurrent(i)}
+                onClick={() => goTo(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
             ))}
           </div>
 
-          <h3 className="featured-carousel__title">{slide.title}</h3>
-          <p className="featured-carousel__text">{slide.text}</p>
+          <div className={`featured-carousel__content${transitioning ? ' featured-carousel__content--fade' : ''}`}>
+            <h3 className="featured-carousel__title">{slide.title}</h3>
+            <p className="featured-carousel__text">{slide.text}</p>
+          </div>
 
           <Link to={slide.to} className="featured-carousel__cta">
             {slide.cta}
           </Link>
         </div>
 
-        {/* Right arrow */}
-        <button className="featured-carousel__arrow featured-carousel__arrow--right" onClick={next} aria-label="Next">
+        <button
+          className="featured-carousel__arrow featured-carousel__arrow--right"
+          onClick={next}
+          aria-label="Next"
+        >
           <ChevronRight size={22} />
         </button>
 

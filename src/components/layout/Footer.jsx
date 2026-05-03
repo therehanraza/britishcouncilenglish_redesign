@@ -4,15 +4,28 @@ import { Link } from 'react-router-dom';
 const footerSections = [
   {
     title: 'About British Council India',
-    links: ['What we do', 'Our presence in India', 'Leadership team', 'Jobs and opportunities'],
+    links: [
+      { label: 'What we do', path: '/our-work' },
+      { label: 'Our presence in India', path: '/our-work' },
+      { label: 'Leadership team', path: '/our-work' },
+      { label: 'Jobs and opportunities', path: '/our-work' },
+    ],
   },
   {
     title: 'Partner with us',
-    links: ['Why partner with us?', 'Who we work with', 'Affiliate marketing'],
+    links: [
+      { label: 'Why partner with us?', path: '/our-work' },
+      { label: 'Who we work with', path: '/our-work' },
+      { label: 'Affiliate marketing', path: '/our-work' },
+    ],
   },
   {
     title: 'Professional development',
-    links: ['Continuing professional development', 'Conferences', 'Teaching qualifications'],
+    links: [
+      { label: 'Continuing professional development', path: '/learn-english' },
+      { label: 'Conferences', path: '/events' },
+      { label: 'Teaching qualifications', path: '/learn-english' },
+    ],
   },
 ];
 
@@ -20,22 +33,19 @@ function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
+
         <div className="site-footer__intro">
-          <h2>British Council India</h2>
-          <p>
-            Building connections through English, education, arts, culture,
-            libraries, exams, and international opportunities.
-          </p>
+          <div>
+            <h2>British Council India</h2>
+            <p>
+              Building connections through English, education, arts, culture,
+              libraries, exams, and international opportunities.
+            </p>
+          </div>
           <div className="site-footer__contact-list" aria-label="Contact summary">
-            <span>
-              <MapPin size={18} aria-hidden="true" /> India offices
-            </span>
-            <span>
-              <Phone size={18} aria-hidden="true" /> Course and exam support
-            </span>
-            <span>
-              <Mail size={18} aria-hidden="true" /> Newsletter updates
-            </span>
+            <span><MapPin size={18} aria-hidden="true" /> India offices — Delhi, Mumbai, Chennai, Kolkata</span>
+            <span><Phone size={18} aria-hidden="true" /> Course and exam support available Mon–Sat</span>
+            <span><Mail size={18} aria-hidden="true" /> Sign up for newsletter updates</span>
           </div>
         </div>
 
@@ -45,8 +55,8 @@ function Footer() {
               <h3>{section.title}</h3>
               <ul>
                 {section.links.map((link) => (
-                  <li key={link}>
-                    <Link to="/our-work">{link}</Link>
+                  <li key={link.label}>
+                    <Link to={link.path}>{link.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -55,7 +65,7 @@ function Footer() {
         </div>
 
         <div className="site-footer__bottom">
-          <p>English, exams, education, culture, and library services in India.</p>
+          <p>© 2026 British Council India. English, exams, education, culture, and library services.</p>
           <div className="site-footer__socials" aria-label="Social links">
             <a href="https://www.facebook.com/BritishCouncilIndia" target="_blank" rel="noreferrer">
               <span aria-hidden="true">Fb</span>
@@ -71,6 +81,7 @@ function Footer() {
             </a>
           </div>
         </div>
+
       </div>
     </footer>
   );

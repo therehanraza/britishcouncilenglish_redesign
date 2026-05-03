@@ -6,7 +6,7 @@ function PageHero({ eyebrow, title, copy, image, imageAlt, actions = [], childre
       <div className="page-hero__content">
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h1>{title}</h1>
-        <p>{copy}</p>
+        {copy && <p>{copy}</p>}
         {actions.length > 0 && (
           <div className="page-hero__actions">
             {actions.map((action) => (
@@ -16,6 +16,7 @@ function PageHero({ eyebrow, title, copy, image, imageAlt, actions = [], childre
             ))}
           </div>
         )}
+        {children}
       </div>
 
       {image && (
@@ -23,8 +24,6 @@ function PageHero({ eyebrow, title, copy, image, imageAlt, actions = [], childre
           <img src={image} alt={imageAlt || ''} />
         </div>
       )}
-
-      {children}
     </section>
   );
 }
