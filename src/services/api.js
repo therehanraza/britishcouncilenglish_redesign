@@ -1,7 +1,7 @@
 const API_URL = 'https://britishcouncil-api.onrender.com/api';
 
 async function postJson(path, payload) {
-  const response = await fetch(path, {
+  const response = await fetch(`${API_URL}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,11 +22,11 @@ async function postJson(path, payload) {
 }
 
 export function submitNewsletter(payload) {
-  return postJson('/api/newsletter', payload);
+  return postJson('/newsletter', payload);
 }
 
 export function submitContact(payload) {
-  return postJson('/api/contact', payload);
+  return postJson('/contact', payload);
 }
 
 export async function getPage(slug) {

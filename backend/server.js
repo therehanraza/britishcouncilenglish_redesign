@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pageRoutes from './routes/pages.js';
+import contactRoutes from './routes/contact.js';
+import newsletterRoutes from './routes/newsletter.js';
 
 dotenv.config();
 
@@ -13,7 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api', pageRoutes);
+app.use('/api/pages', pageRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {

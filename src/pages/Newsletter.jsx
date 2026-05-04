@@ -16,10 +16,11 @@ function Newsletter() {
 
     const formData = new FormData(event.currentTarget);
     const payload = {
-      name: formData.get('name'),
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
       email: formData.get('email'),
-      topics: formData.getAll('topics'),
-      consent: formData.get('consent') === 'on',
+      interests: formData.getAll('topics'),
+      frequency: formData.get('frequency') || 'monthly',
     };
 
     try {
@@ -52,14 +53,19 @@ function Newsletter() {
         <form className="signup-form" onSubmit={handleSubmit}>
           <div className="form-grid">
             <label>
-              Full name
-              <input type="text" name="name" placeholder="Enter your name" required />
+              First name
+              <input type="text" name="firstName" placeholder="Enter your first name" required />
             </label>
             <label>
-              Email address
-              <input type="email" name="email" placeholder="you@example.com" required />
+              Last name
+              <input type="text" name="lastName" placeholder="Enter your last name" required />
             </label>
           </div>
+
+          <label>
+            Email address
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
 
           <fieldset>
             <legend>What would you like to hear about?</legend>
@@ -72,6 +78,15 @@ function Newsletter() {
               ))}
             </div>
           </fieldset>
+
+          <label>
+            How often would you like to hear from us?
+            <select name="frequency" defaultValue="monthly">
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="occasionally">Occasionally</option>
+            </select>
+          </label>
 
           <label className="consent-row">
             <input type="checkbox" name="consent" required />
