@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import pageRoutes from './routes/pages.js';
 import contactRoutes from './routes/contact.js';
 import newsletterRoutes from './routes/newsletter.js';
@@ -38,6 +40,8 @@ const allowedOrigins = new Set([
   'http://127.0.0.1:5173',
 ]);
 
+app.set('trust proxy', 1);
+app.use(helmet());
 app.use(
   cors({
     origin(origin, callback) {
@@ -50,6 +54,16 @@ app.use(
   })
 );
 app.use(express.json({ limit: '1mb' }));
+
+const formLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    message: 'Too many submissions. Please try again in a few minutes.',
+  },
+});
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -85,8 +99,8 @@ app.use('/api/events', eventRoutes);
 app.use('/api/library', libraryRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/search', searchRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/contact', formLimiter, contactRoutes);
+app.use('/api/newsletter', formLimiter, newsletterRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found.' });

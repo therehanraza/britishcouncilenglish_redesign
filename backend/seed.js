@@ -139,18 +139,19 @@ const pages = [
 async function seed() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ MongoDB connected!');
+    console.log('MongoDB connected.');
 
     await Page.deleteMany({});
-    console.log('🗑️ Cleared existing pages');
+    console.log('Cleared existing pages.');
 
     await Page.insertMany(pages);
-    console.log('✅ Pages seeded successfully!');
+    console.log('Pages seeded successfully.');
 
-    mongoose.disconnect();
-    console.log('✅ Done!');
+    await mongoose.disconnect();
+    console.log('Done.');
   } catch (err) {
-    console.log('❌ Seed failed:', err);
+    console.error('Seed failed:', err);
+    process.exit(1);
   }
 }
 
