@@ -2,15 +2,38 @@ import ButtonLink from '../components/ui/ButtonLink.jsx';
 import FeatureCard from '../components/ui/FeatureCard.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import FeaturedCarousel from '../components/ui/FeaturedCarousel.jsx';
-import { heroSlides, homePromos, pathways } from '../data/siteContent.js';
+import { useEffect, useState } from 'react';
+import { getHomeContent } from '../services/api.js';
 
 function Home() {
+  const [homeContent, setHomeContent] = useState({
+    heroSlides: [],
+    pathways: [],
+    homePromos: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getHomeContent()
+      .then((data) => {
+        setHomeContent(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <main>
       <div className="page">
 
         {/* Hero Carousel - replaces static PageHero */}
-        <FeaturedCarousel items={heroSlides} />
+        {loading && <p className="content-status">Loading featured updates...</p>}
+        {error && <p className="content-status content-status--error">{error}</p>}
+        {!loading && !error && <FeaturedCarousel items={homeContent.heroSlides} />}
 
         <section className="welcome-panel">
           <SectionTitle
@@ -34,7 +57,7 @@ function Home() {
             copy="Choose a pathway and move straight into the section that matches your goal."
           />
           <div className="feature-grid feature-grid--four">
-            {pathways.map((item) => (
+            {homeContent.pathways.map((item) => (
               <FeatureCard item={item} key={item.title} />
             ))}
           </div>
@@ -47,7 +70,7 @@ function Home() {
             copy="Important opportunities are grouped into clear cards so visitors can scan quickly and act with confidence."
           />
           <div className="feature-grid">
-            {homePromos.map((item) => (
+            {homeContent.homePromos.map((item) => (
               <FeatureCard item={item} key={item.title} />
             ))}
           </div>

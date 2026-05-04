@@ -55,6 +55,126 @@ export const defaultEvents = [
   },
 ];
 
+export const defaultHomeContent = {
+  heroSlides: [
+    {
+      title: 'Summer camp 2026 #SummerOfConfidence',
+      text: 'Build confidence this summer! Two exciting pathways, one unforgettable learning experience. For ages 6-17.',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=80',
+      cta: 'Learn more',
+      to: '/events',
+      order: 1,
+    },
+    {
+      title: 'STUDY UK Creative Connections 2026',
+      text: 'British Council in India is delighted to present the third edition of Study UK Creative Connections from 22 June to 31 July 2026 at the British Council, Delhi.',
+      image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1400&q=80',
+      cta: 'Click here to know more',
+      to: '/study-uk',
+      order: 2,
+    },
+    {
+      title: 'Get ready for success with this special discount for online English classes.',
+      text: 'Supercharge your English skills with a discount on our online English course.',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80',
+      cta: 'Get your discount now',
+      to: '/learn-english',
+      order: 3,
+    },
+    {
+      title: 'Learn English Here',
+      text: 'With over 90 years of teaching expertise, the British Council provides an interactive and engaging learning environment designed to build confidence in real-world English. Enrol today!',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80',
+      cta: 'Book a consultation',
+      to: '/learn-english',
+      order: 4,
+    },
+    {
+      title: 'Become a member of our Library today',
+      text: 'Unlimited learning opportunities with British Council Library.',
+      image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80',
+      cta: 'Sign up',
+      to: '/library',
+      isSignup: true,
+      order: 5,
+    },
+  ],
+  pathways: [
+    {
+      title: 'Learn English',
+      text: 'Courses for adults, children, professionals, teachers, and online learners.',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80',
+      to: '/learn-english',
+      order: 1,
+    },
+    {
+      title: 'Take an exam',
+      text: 'English tests, school exams, university exams, and professional qualifications.',
+      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1400&q=80',
+      to: '/take-exam',
+      order: 2,
+    },
+    {
+      title: 'Study in the UK',
+      text: 'Scholarships, courses, education agents, student guides, and alumni opportunities.',
+      image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1400&q=80',
+      to: '/study-uk',
+      order: 3,
+    },
+    {
+      title: 'Library',
+      text: 'Digital resources, physical libraries, reading lists, and cultural workshops.',
+      image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80',
+      to: '/library',
+      order: 4,
+    },
+  ],
+  homePromos: [
+    {
+      title: 'Five Films For Freedom coming this March',
+      text: 'Celebrate global LGBTQIA+ stories through a free online film programme.',
+      image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1400&q=80',
+      to: '/events',
+      order: 1,
+    },
+    {
+      title: 'Apply for a GREAT Scholarship',
+      text: 'Explore scholarship options and make your UK study plans more achievable.',
+      image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1400&q=80',
+      to: '/study-uk',
+      order: 2,
+    },
+    {
+      title: 'Women in STEM Scholarships',
+      text: 'Find funding opportunities for women pursuing science, technology, engineering, and maths.',
+      image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1400&q=80',
+      to: '/study-uk',
+      order: 3,
+    },
+    {
+      title: 'Guide for students aspiring to study in the UK',
+      text: 'Get practical guidance on courses, applications, living costs, and student life.',
+      image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80',
+      to: '/study-uk',
+      order: 4,
+    },
+    {
+      title: 'South Asia TeachingEnglish Online Conference 2025',
+      text: 'Professional development sessions for teachers across the region.',
+      image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=80',
+      to: '/events',
+      order: 5,
+    },
+    {
+      title: 'Corporate English Solutions',
+      text: 'Training options for organisations that want stronger workplace communication.',
+      image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1400&q=80',
+      to: '/learn-english',
+      order: 6,
+    },
+  ],
+};
+
 export const defaultLibraryResources = [
   {
     title: 'Digital Library',

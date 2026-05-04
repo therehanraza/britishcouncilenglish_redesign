@@ -107,3 +107,31 @@ export async function getBlogPosts() {
 
   return data;
 }
+
+export async function getHomeContent() {
+  const response = await appFetch(`${API_URL}/home`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch home content');
+  }
+
+  return data;
+}
+
+export async function getSearchResults(query = '') {
+  const params = new URLSearchParams();
+
+  if (query.trim()) {
+    params.set('q', query.trim());
+  }
+
+  const response = await appFetch(`${API_URL}/search${params.toString() ? `?${params}` : ''}`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch search results');
+  }
+
+  return data;
+}

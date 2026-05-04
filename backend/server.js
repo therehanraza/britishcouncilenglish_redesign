@@ -8,6 +8,8 @@ import newsletterRoutes from './routes/newsletter.js';
 import eventRoutes from './routes/events.js';
 import libraryRoutes from './routes/library.js';
 import blogRoutes from './routes/blog.js';
+import homeRoutes from './routes/home.js';
+import searchRoutes from './routes/search.js';
 import { ensureDefaultContent } from './utils/ensureDefaultContent.js';
 
 dotenv.config();
@@ -62,10 +64,12 @@ app.get('/', (req, res) => {
     service: 'britishcouncilenglish-api',
     endpoints: [
       '/api/health',
+      '/api/home',
       '/api/pages',
       '/api/events',
       '/api/library/resources',
       '/api/blog/posts',
+      '/api/search',
       '/api/contact',
       '/api/newsletter',
     ],
@@ -73,9 +77,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/pages', pageRoutes);
+app.use('/api/home', homeRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/library', libraryRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/search', searchRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 

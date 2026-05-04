@@ -1,9 +1,9 @@
 import { ChevronDown, Home, Menu, Search, X } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { navLinks, utilityLinks } from '../../data/navLinks.js';
-import { searchIndex } from '../../data/siteContent.js';
+import { getSearchResults } from '../../services/api.js';
 import BrandLogo from './BrandLogo.jsx';
 
 function Navbar() {
@@ -12,6 +12,8 @@ function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const navRef = useRef(null);
   const searchInputRef = useRef(null);
   const location = useLocation();
@@ -53,14 +55,32 @@ function Navbar() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const searchResults = useMemo(() => {
-    const clean = searchQuery.trim().toLowerCase();
-    if (!clean) return [];
-    return searchIndex
-      .filter((item) =>
-        `${item.title} ${item.text} ${item.type || ''}`.toLowerCase().includes(clean)
-      )
-      .slice(0, 6);
+  useEffect(() => {
+    const clean = searchQuery.trim();
+
+    if (!clean) {
+      const resetTimer = window.setTimeout(() => {
+        setSearchResults([]);
+        setIsSearching(false);
+      }, 0);
+
+      return () => window.clearTimeout(resetTimer);
+    }
+
+    const timer = window.setTimeout(() => {
+      setIsSearching(true);
+      getSearchResults(clean)
+        .then((data) => {
+          setSearchResults(data.slice(0, 6));
+          setIsSearching(false);
+        })
+        .catch(() => {
+          setSearchResults([]);
+          setIsSearching(false);
+        });
+    }, 220);
+
+    return () => window.clearTimeout(timer);
   }, [searchQuery]);
 
   function handleSearchSubmit(e) {
@@ -311,7 +331,11 @@ function Navbar() {
               </button>
             </form>
 
-            {searchResults.length > 0 && (
+            {isSearching && (
+              <p className="search-overlay__empty">Searching...</p>
+            )}
+
+            {!isSearching && searchResults.length > 0 && (
               <ul className="search-overlay__results">
                 {searchResults.map((item) => (
                   <li key={`${item.type}-${item.title}`}>
@@ -328,7 +352,7 @@ function Navbar() {
               </ul>
             )}
 
-            {searchQuery && searchResults.length === 0 && (
+            {searchQuery && !isSearching && searchResults.length === 0 && (
               <p className="search-overlay__empty">No results found for "{searchQuery}"</p>
             )}
           </div>

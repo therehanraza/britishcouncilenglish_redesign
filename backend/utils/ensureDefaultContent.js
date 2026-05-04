@@ -1,6 +1,12 @@
-import { defaultBlogPosts, defaultEvents, defaultLibraryResources } from '../data/defaultContent.js';
+import {
+  defaultBlogPosts,
+  defaultEvents,
+  defaultHomeContent,
+  defaultLibraryResources,
+} from '../data/defaultContent.js';
 import BlogPost from '../models/BlogPost.js';
 import Event from '../models/Event.js';
+import HomeContent from '../models/HomeContent.js';
 import LibraryResource from '../models/LibraryResource.js';
 
 async function seedIfEmpty(Model, defaults, label) {
@@ -16,6 +22,11 @@ async function seedIfEmpty(Model, defaults, label) {
 
 export async function ensureDefaultContent() {
   await Promise.all([
+    HomeContent.updateOne(
+      { key: 'main' },
+      { $setOnInsert: { key: 'main', ...defaultHomeContent } },
+      { upsert: true }
+    ),
     seedIfEmpty(Event, defaultEvents, 'Events'),
     seedIfEmpty(LibraryResource, defaultLibraryResources, 'Library resources'),
     seedIfEmpty(BlogPost, defaultBlogPosts, 'Blog posts'),
