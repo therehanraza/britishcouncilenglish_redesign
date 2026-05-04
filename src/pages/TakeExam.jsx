@@ -1,42 +1,61 @@
+import { useEffect, useState } from 'react';
 import InfoList from '../components/ui/InfoList.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { examItems, images } from '../data/siteContent.js';
+import { getPage } from '../services/api.js';
 
 function TakeExam() {
+  const [page, setPage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getPage('take-exam')
+      .then((data) => {
+        setPage(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="page">Loading...</div>;
+  if (error) return <div className="page">Error: {error}</div>;
+  if (!page) return null;
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
         <PageHero
-          eyebrow="Tests and qualifications"
-          title="Take an exam"
-          copy="Find English tests, school and business qualifications, professional exams, university exams, and preparation support."
-          image={images.examHall}
-          imageAlt="Students taking an exam"
-          actions={[
-            { label: 'View exam options', to: '#exam-options' },
-            { label: 'Ask for support', to: '/contact', variant: 'secondary' },
-          ]}
+          eyebrow={page.eyebrow}
+          title={page.title}
+          copy={page.copy}
+          image={page.image}
+          imageAlt={page.imageAlt}
+          actions={page.actions}
         />
 
-        <section className="section-block" id="exam-options">
-          <SectionTitle
-            title="Exam services and preparation"
-            copy="Each option is presented as a clear summary so learners and organisations can compare quickly."
-          />
-          <InfoList items={examItems} />
-        </section>
+        {page.sections.map((section, i) => (
+          <section className="section-block" key={i} id={i === 0 ? 'exam-options' : undefined}>
+            <SectionTitle title={section.title} copy={section.copy} />
+            {section.type === 'info-list' && <InfoList items={section.items} />}
+          </section>
+        ))}
       </div>
 
       <aside className="sidebar-column" aria-label="Exam support">
-        <SidebarCard title="Contact us" text="Need help with exam registration or support?" image={images.contact} />
-        <SidebarCard
-          title="WhatsApp exam support"
-          text="Ask about exams offered from Monday to Friday, 9.00 a.m. to 6.00 p.m."
-          image={images.onlineLearning}
-        />
-        <SidebarCard title="EnglishScore" text="A mobile English test for fast language-level insight." image={images.onlineLearning} />
+        {page.sidebar.map((card, i) => (
+          <SidebarCard
+            key={i}
+            title={card.title}
+            text={card.text}
+            image={card.image}
+            detail={card.detail}
+          />
+        ))}
       </aside>
     </main>
   );

@@ -1,23 +1,41 @@
+import { useEffect, useState } from 'react';
 import InfoList from '../components/ui/InfoList.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { images, studyItems } from '../data/siteContent.js';
+import { getPage } from '../services/api.js';
 
 function StudyUK() {
+  const [page, setPage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getPage('study-uk')
+      .then((data) => {
+        setPage(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="page">Loading...</div>;
+  if (error) return <div className="page">Error: {error}</div>;
+  if (!page) return null;
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
         <PageHero
-          eyebrow="Study abroad guidance"
-          title="Study in the UK"
-          copy="Explore UK courses, scholarships, student life, education agents, alumni stories, and practical planning resources."
-          image={images.university}
-          imageAlt="Students on a university campus"
-          actions={[
-            { label: 'Explore pathways', to: '#study-sections' },
-            { label: 'View events', to: '/events', variant: 'secondary' },
-          ]}
+          eyebrow={page.eyebrow}
+          title={page.title}
+          copy={page.copy}
+          image={page.image}
+          imageAlt={page.imageAlt}
+          actions={page.actions}
         />
 
         <section className="copy-panel">
@@ -30,27 +48,24 @@ function StudyUK() {
           </p>
         </section>
 
-        <section className="section-block" id="study-sections">
-          <SectionTitle title="In this section" copy="Popular study topics are grouped into a clear student journey." />
-          <InfoList items={studyItems} />
-        </section>
+        {page.sections.map((section, i) => (
+          <section className="section-block" key={i} id={i === 0 ? 'study-sections' : undefined}>
+            <SectionTitle title={section.title} copy={section.copy} />
+            {section.type === 'info-list' && <InfoList items={section.items} />}
+          </section>
+        ))}
       </div>
 
       <aside className="sidebar-column" aria-label="Study UK highlights">
-        <SidebarCard
-          title="Apply for a GREAT scholarship to a UK university"
-          text="Find scholarships that can support your study plans."
-          image={images.scholarship}
-        />
-        <SidebarCard
-          title="Take your IELTS preparation to the next level"
-          text="Explore preparation options for study and migration goals."
-          image={images.studentsLibrary}
-        />
-        <SidebarCard
-          title="Unlock your path to academic excellence"
-          text="Use guides and events to plan your UK study journey."
-        />
+        {page.sidebar.map((card, i) => (
+          <SidebarCard
+            key={i}
+            title={card.title}
+            text={card.text}
+            image={card.image}
+            detail={card.detail}
+          />
+        ))}
       </aside>
     </main>
   );

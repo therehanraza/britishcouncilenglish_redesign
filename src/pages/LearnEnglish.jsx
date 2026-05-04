@@ -1,50 +1,61 @@
+import { useEffect, useState } from 'react';
 import InfoList from '../components/ui/InfoList.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { images, learnCourses } from '../data/siteContent.js';
+import { getPage } from '../services/api.js';
 
 function LearnEnglish() {
+  const [page, setPage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getPage('learn-english')
+      .then((data) => {
+        setPage(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="page">Loading...</div>;
+  if (error) return <div className="page">Error: {error}</div>;
+  if (!page) return null;
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
         <PageHero
-          eyebrow="Learn English"
-          title="Learn English with the world's English experts"
-          copy="Choose online classes, in-person courses, young learner programmes, workplace training, and teacher development options."
-          image={images.adultLearning}
-          imageAlt="Adults learning English together"
-          actions={[
-            { label: 'Explore courses', to: '#courses' },
-            { label: 'Contact us', to: '/contact', variant: 'secondary' },
-          ]}
+          eyebrow={page.eyebrow}
+          title={page.title}
+          copy={page.copy}
+          image={page.image}
+          imageAlt={page.imageAlt}
+          actions={page.actions}
         />
 
-        <section className="section-block" id="courses">
-          <SectionTitle
-            title="Explore our courses"
-            copy="Courses are organized by learner type so students can find the right path faster."
-          />
-          <InfoList items={learnCourses} />
-        </section>
+        {page.sections.map((section, i) => (
+          <section className="section-block" key={i} id={i === 0 ? 'courses' : undefined}>
+            <SectionTitle title={section.title} copy={section.copy} />
+            {section.type === 'info-list' && <InfoList items={section.items} />}
+          </section>
+        ))}
       </div>
 
       <aside className="sidebar-column" aria-label="Learn English highlights">
-        <SidebarCard
-          title="Teaching courses and qualifications"
-          text="Professional development for English teachers and education teams."
-          image={images.school}
-        />
-        <SidebarCard
-          title="Equality, diversity and inclusion in English teaching"
-          text="Resources and programmes that support inclusive learning spaces."
-          image={images.kidsCourse}
-        />
-        <SidebarCard
-          title="Live chat for English courses"
-          text="Get help choosing a course or understanding registration."
-          detail="Mon-Sat, 9.00 a.m. to 6.00 p.m."
-        />
+        {page.sidebar.map((card, i) => (
+          <SidebarCard
+            key={i}
+            title={card.title}
+            text={card.text}
+            image={card.image}
+            detail={card.detail}
+          />
+        ))}
       </aside>
     </main>
   );

@@ -1,24 +1,43 @@
+import { useEffect, useState } from 'react';
 import FeatureCard from '../components/ui/FeatureCard.jsx';
 import InfoList from '../components/ui/InfoList.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { images, workAreas } from '../data/siteContent.js';
+import { getPage } from '../services/api.js';
+import { images } from '../data/siteContent.js';
 
 function OurWork() {
+  const [page, setPage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getPage('our-work')
+      .then((data) => {
+        setPage(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="page">Loading...</div>;
+  if (error) return <div className="page">Error: {error}</div>;
+  if (!page) return null;
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
         <PageHero
-          eyebrow="Our work in India"
-          title="Creating opportunities through education, culture, and skills"
-          copy="Our work helps young people develop skills, gain international experience, and build stronger understanding between cultures."
-          image={images.onlineLearning}
-          imageAlt="People learning together online"
-          actions={[
-            { label: 'Explore programmes', to: '#programmes' },
-            { label: 'Partner with us', to: '/contact', variant: 'secondary' },
-          ]}
+          eyebrow={page.eyebrow}
+          title={page.title}
+          copy={page.copy}
+          image={page.image}
+          imageAlt={page.imageAlt}
+          actions={page.actions}
         />
 
         <section className="section-block">
@@ -46,16 +65,24 @@ function OurWork() {
           </div>
         </section>
 
-        <section className="section-block" id="programmes">
-          <SectionTitle title="In this section" copy="Programme areas are easier to scan as image-led summaries." />
-          <InfoList items={workAreas} />
-        </section>
+        {page.sections.map((section, i) => (
+          <section className="section-block" key={i} id={i === 0 ? 'programmes' : undefined}>
+            <SectionTitle title={section.title} copy={section.copy} />
+            {section.type === 'info-list' && <InfoList items={section.items} />}
+          </section>
+        ))}
       </div>
 
       <aside className="sidebar-column" aria-label="Our work highlights">
-        <SidebarCard title="English teaching and learning" text="Support for quality English education and assessment." image={images.adultLearning} />
-        <SidebarCard title="Higher education" text="International collaboration, grants, policy, scholarships, and mobility." image={images.university} />
-        <SidebarCard title="Skills and schools" text="Projects that support young people and school communities." image={images.school} />
+        {page.sidebar.map((card, i) => (
+          <SidebarCard
+            key={i}
+            title={card.title}
+            text={card.text}
+            image={card.image}
+            detail={card.detail}
+          />
+        ))}
       </aside>
     </main>
   );
