@@ -18,12 +18,16 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsMenuOpen(false);
-    setActiveDropdown(null);
-    setMobileExpanded(null);
-    setIsSearchOpen(false);
-    setSearchQuery('');
-  }, [location]);
+    const timer = window.setTimeout(() => {
+      setIsMenuOpen(false);
+      setActiveDropdown(null);
+      setMobileExpanded(null);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     function handleClickOutside(e) {

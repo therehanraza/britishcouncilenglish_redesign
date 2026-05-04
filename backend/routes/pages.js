@@ -3,31 +3,39 @@ import Page from '../models/page.js';
 
 const router = express.Router();
 
-// GET all pages
-router.get('/pages', async (req, res) => {
+async function getAllPages(req, res) {
   try {
     const pages = await Page.find();
-    res.json(pages);
+    return res.json(pages);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
-});
+}
 
-// GET single page by slug
-router.get('/pages/:slug', async (req, res) => {
+async function getPageBySlug(req, res) {
   try {
     const page = await Page.findOne({ slug: req.params.slug });
+
     if (!page) {
       return res.status(404).json({ message: 'Page not found' });
     }
-    res.json(page);
+
+    return res.json(page);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
-});
+}
+
+// GET all pages
+router.get('/', getAllPages);
+router.get('/pages', getAllPages);
+
+// GET single page by slug
+router.get('/:slug', getPageBySlug);
+router.get('/pages/:slug', getPageBySlug);
 
 // POST create new page
-router.post('/pages', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const page = new Page(req.body);
     const savedPage = await page.save();
@@ -38,13 +46,18 @@ router.post('/pages', async (req, res) => {
 });
 
 // PUT update page
-router.put('/pages/:slug', async (req, res) => {
+router.put('/:slug', async (req, res) => {
   try {
     const page = await Page.findOneAndUpdate(
       { slug: req.params.slug },
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
+
+    if (!page) {
+      return res.status(404).json({ message: 'Page not found' });
+    }
+
     res.json(page);
   } catch (err) {
     res.status(400).json({ message: err.message });

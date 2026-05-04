@@ -1,4 +1,15 @@
-const API_URL = 'https://britishcouncil-api.onrender.com/api';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://britishcouncil-api.onrender.com/api').replace(/\/$/, '');
+
+async function parseJson(response) {
+  try {
+    return await response.json();
+  } catch {
+    return {
+      ok: false,
+      message: 'Unexpected server response.',
+    };
+  }
+}
 
 async function postJson(path, payload) {
   const response = await fetch(`${API_URL}${path}`, {
@@ -9,10 +20,7 @@ async function postJson(path, payload) {
     body: JSON.stringify(payload),
   });
 
-  const data = await response.json().catch(() => ({
-    ok: false,
-    message: 'Unexpected server response.',
-  }));
+  const data = await parseJson(response);
 
   if (!response.ok) {
     throw new Error(data.message || 'Request failed.');
@@ -31,12 +39,22 @@ export function submitContact(payload) {
 
 export async function getPage(slug) {
   const response = await fetch(`${API_URL}/pages/${slug}`);
-  if (!response.ok) throw new Error('Page not found');
-  return response.json();
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Page not found');
+  }
+
+  return data;
 }
 
 export async function getAllPages() {
   const response = await fetch(`${API_URL}/pages`);
-  if (!response.ok) throw new Error('Failed to fetch pages');
-  return response.json();
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch pages');
+  }
+
+  return data;
 }

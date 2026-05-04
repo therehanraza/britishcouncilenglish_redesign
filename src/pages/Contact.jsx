@@ -15,7 +15,8 @@ function Contact() {
     setFormStatus('loading');
     setFormMessage('');
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const payload = {
       name: formData.get('name'),
       email: formData.get('email'),
@@ -25,7 +26,7 @@ function Contact() {
 
     try {
       await submitContact(payload);
-      event.currentTarget.reset();
+      form.reset();
       setFormStatus('success');
       setFormMessage('Thanks. Your message has been sent.');
     } catch (error) {

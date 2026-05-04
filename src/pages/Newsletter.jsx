@@ -14,7 +14,8 @@ function Newsletter() {
     setFormStatus('loading');
     setFormMessage('');
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const payload = {
       firstName: formData.get('firstName'),
       lastName: formData.get('lastName'),
@@ -25,7 +26,7 @@ function Newsletter() {
 
     try {
       await submitNewsletter(payload);
-      event.currentTarget.reset();
+      form.reset();
       setFormStatus('success');
       setFormMessage('Thanks. Your newsletter preferences have been saved.');
     } catch (error) {
