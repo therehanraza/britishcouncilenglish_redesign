@@ -17,6 +17,7 @@ function Navbar({ navLinks = [], utilityLinks = [] }) {
   const searchInputRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const hasDropdown = (link) => (link.dropdown?.length || 0) > 0;
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -151,10 +152,10 @@ function Navbar({ navLinks = [], utilityLinks = [] }) {
               <div
                 key={link.path}
                 className="primary-nav__item"
-                onMouseEnter={() => link.dropdown?.length && setActiveDropdown(link.label)}
-                onMouseLeave={() => link.dropdown?.length && setActiveDropdown(null)}
+                onMouseEnter={() => hasDropdown(link) && setActiveDropdown(link.label)}
+                onMouseLeave={() => hasDropdown(link) && setActiveDropdown(null)}
               >
-                {link.dropdown?.length ? (
+                {hasDropdown(link) ? (
                   <div className="primary-nav__link-group">
                     <NavLink
                       className={({ isActive }) =>
@@ -200,7 +201,7 @@ function Navbar({ navLinks = [], utilityLinks = [] }) {
                   </NavLink>
                 )}
 
-                {link.dropdown?.length && isMenuOpen && mobileExpanded === link.label && (
+                {hasDropdown(link) && isMenuOpen && mobileExpanded === link.label && (
                   <div className="mobile-dropdown">
                     {link.dropdown.map((item) => (
                       <NavLink
@@ -262,7 +263,7 @@ function Navbar({ navLinks = [], utilityLinks = [] }) {
 
         {/* Mega menu — desktop hover dropdowns */}
         {navLinks.map((link) =>
-          link.dropdown?.length && activeDropdown === link.label ? (
+          hasDropdown(link) && activeDropdown === link.label ? (
             <div
               key={link.label}
               className="mega-menu"
