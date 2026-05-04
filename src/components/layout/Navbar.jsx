@@ -2,11 +2,10 @@ import { ChevronDown, Home, Menu, Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
-import { navLinks, utilityLinks } from '../../data/navLinks.js';
 import { getSearchResults } from '../../services/api.js';
 import BrandLogo from './BrandLogo.jsx';
 
-function Navbar() {
+function Navbar({ navLinks = [], utilityLinks = [] }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileExpanded, setMobileExpanded] = useState(null);
@@ -152,10 +151,10 @@ function Navbar() {
               <div
                 key={link.path}
                 className="primary-nav__item"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
-                onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
+                onMouseEnter={() => link.dropdown?.length && setActiveDropdown(link.label)}
+                onMouseLeave={() => link.dropdown?.length && setActiveDropdown(null)}
               >
-                {link.dropdown ? (
+                {link.dropdown?.length ? (
                   <div className="primary-nav__link-group">
                     <NavLink
                       className={({ isActive }) =>
@@ -201,7 +200,7 @@ function Navbar() {
                   </NavLink>
                 )}
 
-                {link.dropdown && isMenuOpen && mobileExpanded === link.label && (
+                {link.dropdown?.length && isMenuOpen && mobileExpanded === link.label && (
                   <div className="mobile-dropdown">
                     {link.dropdown.map((item) => (
                       <NavLink
@@ -263,7 +262,7 @@ function Navbar() {
 
         {/* Mega menu — desktop hover dropdowns */}
         {navLinks.map((link) =>
-          link.dropdown && activeDropdown === link.label ? (
+          link.dropdown?.length && activeDropdown === link.label ? (
             <div
               key={link.label}
               className="mega-menu"

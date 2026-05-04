@@ -10,6 +10,7 @@ import libraryRoutes from './routes/library.js';
 import blogRoutes from './routes/blog.js';
 import homeRoutes from './routes/home.js';
 import searchRoutes from './routes/search.js';
+import siteRoutes from './routes/site.js';
 import { ensureDefaultContent } from './utils/ensureDefaultContent.js';
 
 dotenv.config();
@@ -64,6 +65,7 @@ app.get('/', (req, res) => {
     service: 'britishcouncilenglish-api',
     endpoints: [
       '/api/health',
+      '/api/site/chrome',
       '/api/home',
       '/api/pages',
       '/api/events',
@@ -77,6 +79,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/pages', pageRoutes);
+app.use('/api/site', siteRoutes);
 app.use('/api/home', homeRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/library', libraryRoutes);

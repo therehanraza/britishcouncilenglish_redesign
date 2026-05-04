@@ -246,3 +246,128 @@ export const defaultBlogPosts = [
     order: 6,
   },
 ];
+
+export const defaultSiteChrome = {
+  navLinks: [
+    {
+      label: 'Home',
+      path: '/',
+      order: 1,
+    },
+    {
+      label: 'Learn English',
+      path: '/learn-english',
+      order: 2,
+      dropdown: [
+        { label: 'English courses for adults', path: '/learn-english/courses-adults', order: 1 },
+        { label: 'English courses for kids and teens', path: '/learn-english/courses-kids', order: 2 },
+        { label: 'Learn English online', path: '/learn-english/online', order: 3 },
+        { label: 'Corporate English Solutions', path: '/learn-english/corporate', order: 4 },
+        { label: 'Professional English for Sectors', path: '/learn-english/professional', order: 5 },
+        { label: 'Teaching courses and qualifications', path: '/learn-english/teaching', order: 6 },
+      ],
+    },
+    {
+      label: 'Take an exam',
+      path: '/take-exam',
+      order: 3,
+      dropdown: [
+        { label: 'Why take an exam with the British Council?', path: '/take-exam/why', order: 1 },
+        { label: 'Assess Proficiency Pathway', path: '/take-exam/proficiency', order: 2 },
+        { label: 'English Assessment for schools', path: '/take-exam/schools', order: 3 },
+        { label: 'Aptis - Forward thinking English test', path: '/take-exam/aptis', order: 4 },
+        { label: 'Cambridge Assessment', path: '/take-exam/cambridge', order: 5 },
+        { label: 'Professional exams', path: '/take-exam/professional', order: 6 },
+        { label: 'University exams', path: '/take-exam/university', order: 7 },
+        { label: 'Prepare for IELTS with the British Council', path: '/take-exam/ielts', order: 8 },
+        { label: 'EnglishScore', path: '/take-exam/englishscore', order: 9 },
+      ],
+    },
+    {
+      label: 'Study in the UK',
+      path: '/study-uk',
+      order: 4,
+      dropdown: [
+        { label: 'Study UK Create to Connect Competition', path: '/study-uk/create-connect', order: 1 },
+        { label: 'Alumni Awards 2026', path: '/study-uk/alumni-awards', order: 2 },
+        { label: 'Courses in the UK', path: '/study-uk/courses', order: 3 },
+        { label: 'Education Agents', path: '/study-uk/agents', order: 4 },
+        { label: 'MOOCs on FutureLearn', path: '/study-uk/moocs', order: 5 },
+        { label: 'Scholarships and funding', path: '/study-uk/scholarships', order: 6 },
+        { label: 'Why study in the UK?', path: '/study-uk/why', order: 7 },
+      ],
+    },
+    {
+      label: 'Our work in India',
+      path: '/our-work',
+      order: 5,
+      dropdown: [
+        { label: 'Our work in the Arts', path: '/our-work/arts', order: 1 },
+        { label: 'Our work in skills', path: '/our-work/skills', order: 2 },
+        { label: 'Our work with schools', path: '/our-work/schools', order: 3 },
+        { label: 'Our work in higher education', path: '/our-work/higher-education', order: 4 },
+        { label: 'Our work in English teaching and learning', path: '/our-work/english-teaching', order: 5 },
+      ],
+    },
+    {
+      label: 'Events',
+      path: '/events',
+      order: 6,
+    },
+    {
+      label: 'Library',
+      path: '/library',
+      order: 7,
+    },
+  ],
+  utilityLinks: [
+    { label: 'Sign up for newsletters', path: '/newsletter', order: 1 },
+    { label: 'Contact us', path: '/contact', order: 2 },
+    { label: 'Blog', path: '/blog', order: 3 },
+  ],
+  footer: {
+    title: 'British Council India',
+    copy: 'Building connections through English, education, arts, culture, libraries, exams, and international opportunities.',
+    contactItems: [
+      { type: 'location', text: 'India offices - Delhi, Mumbai, Chennai, Kolkata', order: 1 },
+      { type: 'phone', text: 'Course and exam support available Mon-Sat', order: 2 },
+      { type: 'mail', text: 'Sign up for newsletter updates', order: 3 },
+    ],
+    sections: [
+      {
+        title: 'About British Council India',
+        order: 1,
+        links: [
+          { label: 'What we do', path: '/our-work', order: 1 },
+          { label: 'Our presence in India', path: '/our-work', order: 2 },
+          { label: 'Leadership team', path: '/our-work', order: 3 },
+          { label: 'Jobs and opportunities', path: '/our-work', order: 4 },
+        ],
+      },
+      {
+        title: 'Partner with us',
+        order: 2,
+        links: [
+          { label: 'Why partner with us?', path: '/our-work', order: 1 },
+          { label: 'Who we work with', path: '/our-work', order: 2 },
+          { label: 'Affiliate marketing', path: '/our-work', order: 3 },
+        ],
+      },
+      {
+        title: 'Professional development',
+        order: 3,
+        links: [
+          { label: 'Continuing professional development', path: '/learn-english', order: 1 },
+          { label: 'Conferences', path: '/events', order: 2 },
+          { label: 'Teaching qualifications', path: '/learn-english', order: 3 },
+        ],
+      },
+    ],
+    copyright: '2026 British Council India. English, exams, education, culture, and library services.',
+    socialLinks: [
+      { label: 'Facebook', shortLabel: 'Fb', url: 'https://www.facebook.com/BritishCouncilIndia', order: 1 },
+      { label: 'Instagram', shortLabel: 'Ig', url: 'https://www.instagram.com/britishcouncilindia/', order: 2 },
+      { label: 'LinkedIn', shortLabel: 'In', url: 'https://www.linkedin.com/company/british-council/', order: 3 },
+    ],
+  },
+};

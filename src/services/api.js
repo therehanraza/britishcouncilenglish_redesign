@@ -135,3 +135,14 @@ export async function getSearchResults(query = '') {
 
   return data;
 }
+
+export async function getSiteChrome() {
+  const response = await appFetch(`${API_URL}/site/chrome`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch site navigation');
+  }
+
+  return data;
+}
