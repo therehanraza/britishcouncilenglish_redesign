@@ -1,0 +1,128 @@
+export const defaultEvents = [
+  {
+    title: 'Fun-filled Saturdays at the British Council Library',
+    category: 'Library',
+    date: 'Wednesday, 1 April 2026 - Thursday, 30 April 2026',
+    location: 'British Council Kolkata',
+    text: 'Adventure-filled Saturdays designed for children, with activities that encourage reading and creativity.',
+    image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=80',
+    order: 1,
+  },
+  {
+    title: 'Dive into culture for free every Friday',
+    category: 'Library',
+    date: 'Wednesday, 1 April 2026 - Friday, 1 May 2026',
+    location: 'British Council Delhi and Kolkata',
+    text: 'A free weekly programme for fans of film, literature, poetry, and cultural conversations.',
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1400&q=80',
+    order: 2,
+  },
+  {
+    title: 'South-South Learning Symposium',
+    category: 'Education',
+    date: 'Thursday, 7 May 2026',
+    location: 'British Council Delhi',
+    text: 'A symposium focused on foundational learning and multilingual education.',
+    image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=80',
+    order: 3,
+  },
+  {
+    title: 'Summer camp 2026 #SummerOfConfidence',
+    category: 'Young learners',
+    date: 'Monday, 18 May 2026 - Friday, 22 May 2026',
+    location: 'British Council Kolkata',
+    text: 'Confidence-building learning pathways for children through creative activities.',
+    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=80',
+    order: 4,
+  },
+  {
+    title: 'The Reading Quest: the ultimate book lover challenge',
+    category: 'Library',
+    date: 'Monday, 25 May 2026 - Saturday, 20 June 2026',
+    location: 'British Council Kolkata',
+    text: 'A curated reading challenge for adults who want to read more and think deeper.',
+    image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80',
+    order: 5,
+  },
+  {
+    title: 'Reading Challenge 2026: Discover Your Story',
+    category: 'Library',
+    date: 'Saturday, 30 May 2026 - Sunday, 28 June 2026',
+    location: 'British Council Delhi',
+    text: 'A reading challenge for children to discover stories and build imagination.',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80',
+    order: 6,
+  },
+];
+
+export const defaultLibraryResources = [
+  {
+    title: 'Digital Library',
+    text: 'Access e-books, audiobooks, films, newspapers, magazines, journals, and self-paced learning modules.',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1400&q=80',
+    order: 1,
+  },
+  {
+    title: 'Physical Library',
+    text: 'Visit vibrant library spaces in Delhi, Chennai, and Kolkata for curated collections and events.',
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1400&q=80',
+    order: 2,
+  },
+  {
+    title: 'Discover more',
+    text: 'Explore recommended books, films, and learning resources from the library collection.',
+    image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80',
+    order: 3,
+  },
+  {
+    title: 'Upcoming workshops',
+    text: 'Attend workshops, film screenings, book clubs, and author discussions.',
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1400&q=80',
+    order: 4,
+  },
+];
+
+export const defaultBlogPosts = [
+  {
+    title: 'How English practice supports confidence at work',
+    category: 'Learn English',
+    text: 'Small habits and guided practice can make professional communication feel clearer and more natural.',
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80',
+    order: 1,
+  },
+  {
+    title: 'What to prepare before applying to study in the UK',
+    category: 'Study UK',
+    text: 'A practical checklist for course research, documents, funding, and application timelines.',
+    image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1400&q=80',
+    order: 2,
+  },
+  {
+    title: 'Why library communities matter for young readers',
+    category: 'Library',
+    text: 'Reading challenges, clubs, and workshops can help children build curiosity and imagination.',
+    image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80',
+    order: 3,
+  },
+  {
+    title: 'Making the most of cultural events',
+    category: 'Events',
+    text: 'How exhibitions, film programmes, and talks create space for conversation and connection.',
+    image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1400&q=80',
+    order: 4,
+  },
+  {
+    title: 'Understanding English assessment options',
+    category: 'Exams',
+    text: 'A simple guide to choosing between exams, school assessments, and workplace language tests.',
+    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1400&q=80',
+    order: 5,
+  },
+  {
+    title: 'Teaching ideas for more active classrooms',
+    category: 'Professional development',
+    text: 'Classroom techniques that help learners practise, collaborate, and build confidence.',
+    image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=80',
+    order: 6,
+  },
+];

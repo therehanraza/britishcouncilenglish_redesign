@@ -698,6 +698,23 @@ img { display: block; max-width: 100%; }
   line-height: 1.7;
 }
 
+.content-status {
+  margin: 0;
+  padding: 18px 20px;
+  border: 1px solid rgba(0, 207, 234, 0.22);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--color-purple);
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+}
+
+.content-status--error {
+  border-color: rgba(185, 28, 28, 0.25);
+  background: #fff4f4;
+  color: #9f1239;
+}
+
 /* ── Feature Grid ── */
 .feature-grid {
   display: grid;

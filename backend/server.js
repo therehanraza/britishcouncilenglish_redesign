@@ -5,6 +5,10 @@ import dotenv from 'dotenv';
 import pageRoutes from './routes/pages.js';
 import contactRoutes from './routes/contact.js';
 import newsletterRoutes from './routes/newsletter.js';
+import eventRoutes from './routes/events.js';
+import libraryRoutes from './routes/library.js';
+import blogRoutes from './routes/blog.js';
+import { ensureDefaultContent } from './utils/ensureDefaultContent.js';
 
 dotenv.config();
 
@@ -52,7 +56,26 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'britishcouncilenglish-api',
+    endpoints: [
+      '/api/health',
+      '/api/pages',
+      '/api/events',
+      '/api/library/resources',
+      '/api/blog/posts',
+      '/api/contact',
+      '/api/newsletter',
+    ],
+  });
+});
+
 app.use('/api/pages', pageRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/library', libraryRoutes);
+app.use('/api/blog', blogRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
@@ -70,8 +93,9 @@ mongoose
     serverSelectionTimeoutMS: 30000,
     family: 4,
   })
-  .then(() => {
+  .then(async () => {
     console.log('MongoDB connected.');
+    await ensureDefaultContent();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}.`);
     });

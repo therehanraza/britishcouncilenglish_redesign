@@ -2,9 +2,27 @@ import EventCard from '../components/ui/EventCard.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { events, images } from '../data/siteContent.js';
+import { useEffect, useState } from 'react';
+import { images } from '../data/siteContent.js';
+import { getEvents } from '../services/api.js';
 
 function Events() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getEvents()
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
@@ -25,11 +43,15 @@ function Events() {
             title="Upcoming and featured events"
             copy="Event information is arranged with dates, locations, and categories visible at a glance."
           />
-          <div className="event-list">
-            {events.map((event) => (
-              <EventCard event={event} key={event.title} />
-            ))}
-          </div>
+          {loading && <p className="content-status">Loading events...</p>}
+          {error && <p className="content-status content-status--error">{error}</p>}
+          {!loading && !error && (
+            <div className="event-list">
+              {events.map((event) => (
+                <EventCard event={event} key={event._id || event.title} />
+              ))}
+            </div>
+          )}
         </section>
       </div>
 

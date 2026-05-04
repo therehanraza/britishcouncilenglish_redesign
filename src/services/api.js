@@ -74,3 +74,36 @@ export async function getAllPages() {
 
   return data;
 }
+
+export async function getEvents() {
+  const response = await appFetch(`${API_URL}/events`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch events');
+  }
+
+  return data;
+}
+
+export async function getLibraryResources() {
+  const response = await appFetch(`${API_URL}/library/resources`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch library resources');
+  }
+
+  return data;
+}
+
+export async function getBlogPosts() {
+  const response = await appFetch(`${API_URL}/blog/posts`);
+  const data = await parseJson(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to fetch blog posts');
+  }
+
+  return data;
+}

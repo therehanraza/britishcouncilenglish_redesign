@@ -3,9 +3,27 @@ import FeatureCard from '../components/ui/FeatureCard.jsx';
 import PageHero from '../components/ui/PageHero.jsx';
 import SectionTitle from '../components/ui/SectionTitle.jsx';
 import SidebarCard from '../components/ui/SidebarCard.jsx';
-import { images, libraryResources } from '../data/siteContent.js';
+import { useEffect, useState } from 'react';
+import { images } from '../data/siteContent.js';
+import { getLibraryResources } from '../services/api.js';
 
 function Library() {
+  const [libraryResources, setLibraryResources] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getLibraryResources()
+      .then((data) => {
+        setLibraryResources(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <main className="page two-column-page">
       <div className="content-column">
@@ -39,11 +57,15 @@ function Library() {
 
         <section className="section-block">
           <SectionTitle title="Library services" copy="Membership options and library activities are grouped into clear cards." />
-          <div className="feature-grid feature-grid--two">
-            {libraryResources.map((item) => (
-              <FeatureCard item={item} key={item.title} />
-            ))}
-          </div>
+          {loading && <p className="content-status">Loading library services...</p>}
+          {error && <p className="content-status content-status--error">{error}</p>}
+          {!loading && !error && (
+            <div className="feature-grid feature-grid--two">
+              {libraryResources.map((item) => (
+                <FeatureCard item={item} key={item._id || item.title} />
+              ))}
+            </div>
+          )}
         </section>
       </div>
 
