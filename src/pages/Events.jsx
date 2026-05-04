@@ -43,7 +43,7 @@ function Events() {
             title="Upcoming and featured events"
             copy="Event information is arranged with dates, locations, and categories visible at a glance."
           />
-          {loading && <p className="content-status">Loading events...</p>}
+          {loading && <p className="content-status">Loading content...</p>}
           {error && <p className="content-status content-status--error">{error}</p>}
           {!loading && !error && (
             <div className="event-list">

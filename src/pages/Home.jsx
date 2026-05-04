@@ -26,14 +26,28 @@ function Home() {
       });
   }, []);
 
+  if (loading) {
+    return (
+      <main className="page">
+        <p className="content-status">Loading content...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="page">
+        <p className="content-status content-status--error">{error}</p>
+      </main>
+    );
+  }
+
   return (
     <main>
       <div className="page">
 
         {/* Hero Carousel - replaces static PageHero */}
-        {loading && <p className="content-status">Loading featured updates...</p>}
-        {error && <p className="content-status content-status--error">{error}</p>}
-        {!loading && !error && <FeaturedCarousel items={homeContent.heroSlides} />}
+        <FeaturedCarousel items={homeContent.heroSlides} />
 
         <section className="welcome-panel">
           <SectionTitle

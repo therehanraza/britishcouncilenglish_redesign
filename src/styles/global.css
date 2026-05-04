@@ -1036,8 +1036,8 @@ a.feature-card:hover .feature-card__link {
   gap: 12px;
 }
 
-.checkbox-card,
-.consent-row {
+.signup-form .checkbox-card,
+.signup-form .consent-row {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1048,6 +1048,15 @@ a.feature-card:hover .feature-card__link {
   background: #ffffff;
   transition: border-color 180ms ease;
   cursor: pointer;
+}
+
+.signup-form .checkbox-card input[type="checkbox"],
+.signup-form .consent-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-cyan);
 }
 
 .checkbox-card:hover { border-color: var(--color-cyan); }

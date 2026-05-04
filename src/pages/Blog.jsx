@@ -34,7 +34,7 @@ function Blog() {
 
       <section className="section-block">
         <SectionTitle title="Latest articles" copy="A magazine-style grid makes articles easier to scan and explore." />
-        {loading && <p className="content-status">Loading articles...</p>}
+        {loading && <p className="content-status">Loading content...</p>}
         {error && <p className="content-status content-status--error">{error}</p>}
         {!loading && !error && (
           <div className="feature-grid">

@@ -22,8 +22,22 @@ function TakeExam() {
       });
   }, []);
 
-  if (loading) return <div className="page">Loading...</div>;
-  if (error) return <div className="page">Error: {error}</div>;
+  if (loading) {
+    return (
+      <main className="page">
+        <p className="content-status">Loading content...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="page">
+        <p className="content-status content-status--error">{error}</p>
+      </main>
+    );
+  }
+
   if (!page) return null;
 
   return (
