@@ -1,5 +1,11 @@
 const API_URL = (import.meta.env.VITE_API_URL || 'https://britishcouncil-api.onrender.com/api').replace(/\/$/, '');
 
+function emitLoadingEvent(name) {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(name));
+  }
+}
+
 async function parseJson(response) {
   try {
     return await response.json();
@@ -11,8 +17,18 @@ async function parseJson(response) {
   }
 }
 
+async function appFetch(url, options) {
+  emitLoadingEvent('app-loading-start');
+
+  try {
+    return await fetch(url, options);
+  } finally {
+    emitLoadingEvent('app-loading-done');
+  }
+}
+
 async function postJson(path, payload) {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await appFetch(`${API_URL}${path}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -38,7 +54,7 @@ export function submitContact(payload) {
 }
 
 export async function getPage(slug) {
-  const response = await fetch(`${API_URL}/pages/${slug}`);
+  const response = await appFetch(`${API_URL}/pages/${slug}`);
   const data = await parseJson(response);
 
   if (!response.ok) {
@@ -49,7 +65,7 @@ export async function getPage(slug) {
 }
 
 export async function getAllPages() {
-  const response = await fetch(`${API_URL}/pages`);
+  const response = await appFetch(`${API_URL}/pages`);
   const data = await parseJson(response);
 
   if (!response.ok) {
